@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>House Blueprint Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #333;
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.75);
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+    h1 { 
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    img {
+      display: block;
+      margin-top: 20px;
+      border-radius: 10px;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>House Blueprint Generator</h1>
+
+    <div id="houseOptions">
+      <input type="number" id="floors" placeholder="Number of Floors" value="1">
+      <input type="number" id="rooms" placeholder="Rooms per Floor" value="3">
+      <input type="number" id="sqft" placeholder="Total Size (sqft)" value="1200">
+    </div>
+
+    <button onclick="generateBlueprint()">Generate</button>
+
+    <img id="resultImg" src="" alt="Generated Blueprint" style="display:none;">
+  </div>
+
+  <script>
+    function generateBlueprint() {
+      const floors = document.getElementById("floors").value;
+      const rooms = document.getElementById("rooms").value;
+      const sqft = document.getElementById("sqft").value;
+
+      fetch('/generate_house', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ floors, rooms, sqft })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.image) {
+          const resultImage = document.getElementById("resultImg");
+          resultImage.src = data.image + '?t=' + new Date().getTime();
+          resultImage.style.display = 'block';
+        } else {
+          console.error('Error generating image:', data.error);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', generateBlueprint);
+  </script>
+</body>
+</html>
