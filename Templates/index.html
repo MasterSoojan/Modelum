@@ -1,100 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>House Blueprint Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelum - AI Blueprint Generator</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #333;
       margin: 0;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1505691938895-1758d7feb511');
+      background-size: cover;
+      background-position: center;
       color: #fff;
+      backdrop-filter: blur(4px);
+    }
+    header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      min-height: 100vh;
+      padding: 1em;
+      background-color: rgba(0, 0, 0, 0.7);
     }
-    .container {
-      background-color: rgba(0, 0, 0, 0.75);
-      max-width: 600px;
-      width: 100%;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    }
-    h1 { 
-      text-align: center;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
+    .logo {
+      font-size: 1.5em;
       font-weight: bold;
-      transition: background-color 0.3s;
+      color: #00ffd5;
     }
-    button:hover {
-      background-color: #45a049;
+    nav a {
+      color: white;
+      margin: 0 1em;
+      text-decoration: none;
+      transition: 0.3s;
     }
-    img {
-      display: block;
-      margin-top: 20px;
+    nav a:hover {
+      color: #00ffd5;
+    }
+    .center-box {
+      text-align: center;
+      margin: 5em auto;
+      background: rgba(0,0,0,0.5);
+      padding: 3em;
       border-radius: 10px;
-      max-width: 100%;
+      width: 80%;
+      max-width: 800px;
+    }
+    .btn {
+      padding: 0.8em 1.5em;
+      background-color: #00ffd5;
+      border: none;
+      border-radius: 5px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0.5em;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background-color: #00c4a7;
+    }
+    .form-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      padding: 2em;
+      z-index: 10;
+      border-radius: 10px;
+    }
+    .form-popup input, .form-popup select {
+      width: 100%;
+      padding: 0.5em;
+      margin: 0.5em 0;
+      border-radius: 5px;
+      border: none;
+    }
+    .form-popup .btn {
+      width: 100%;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      z-index: 5;
+    }
+    .social-icons img {
+      width: 30px;
+      margin: 0.5em;
+      cursor: pointer;
+    }
+    footer {
+      background-color: rgba(0,0,0,0.7);
+      text-align: center;
+      padding: 2em;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    .contact-icons img {
+      width: 24px;
+      margin: 0 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>House Blueprint Generator</h1>
+  <div class="overlay" id="overlay"></div>
 
-    <div id="houseOptions">
-      <input type="number" id="floors" placeholder="Number of Floors" value="1">
-      <input type="number" id="rooms" placeholder="Rooms per Floor" value="3">
-      <input type="number" id="sqft" placeholder="Total Size (sqft)" value="1200">
-    </div>
+  <header>
+    <div class="logo">Modelum</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#use-cases">Use Cases</a>
+      <a href="#contact">Contact</a>
+      <a href="#" onclick="openForm('login')">Login</a>
+    </nav>
+  </header>
 
-    <button onclick="generateBlueprint()">Generate</button>
-
-    <img id="resultImg" src="" alt="Generated Blueprint" style="display:none;">
+  <div class="center-box">
+    <h1>Design Blueprints in Minutes</h1>
+    <p>Modelum uses AI to generate home, office, or organizational blueprints tailored to your needs.</p>
+    <button class="btn" onclick="openForm('register')">Get Started</button>
   </div>
 
+  <div class="form-popup" id="login">
+    <h2>Login</h2>
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button class="btn">Login</button>
+    <p style="text-align:center;">Forgot Password? <a href="#" onclick="openForm('forgot')">Click Here</a></p>
+    <div class="social-icons">
+      <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google">
+      <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+    </div>
+  </div>
+
+  <div class="form-popup" id="register">
+    <h2>Register</h2>
+    <input type="text" placeholder="First Name">
+    <input type="text" placeholder="Last Name">
+    <select>
+      <option value="">Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+    <input type="text" placeholder="Contact Number">
+    <input type="text" placeholder="Country">
+    <input type="text" placeholder="State">
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button class="btn">Register</button>
+  </div>
+
+  <div class="form-popup" id="forgot">
+    <h2>Forgot Password</h2>
+    <input type="email" placeholder="Enter your email">
+    <button class="btn">Reset Password</button>
+  </div>
+
+  <div class="center-box" id="use-cases">
+    <h2>Select Use Type</h2>
+    <button class="btn" onclick="generateQuestions('personal')">Personal</button>
+    <button class="btn" onclick="generateQuestions('professional')">Professional</button>
+    <button class="btn" onclick="generateQuestions('organization')">Organization</button>
+
+    <div id="question-box"></div>
+  </div>
+  <section class="contact-section" id="contact">
+    <center>
+    <h2>Contact Us</h2>
+    <input type="text" placeholder="Your Name"><br>
+    <input type="email" placeholder="Your Email"><br>
+    <textarea rows="4"coloum="20" placeholder="Your Message"></textarea>
+    <button class="btn">Submit</button>
+    </center>
+  </section>
+
+  <footer id="contact">
+    <h3>Contact Us</h3>
+    <p>Email: support@modelum.com</p>
+    <p>Phone: +91-9876543210</p>
+    <div class="contact-icons">
+      <a href="https://facebook.com"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+      <a href="https://instagram.com"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+    </div>
+  </footer>
+
   <script>
-    function generateBlueprint() {
-      const floors = document.getElementById("floors").value;
-      const rooms = document.getElementById("rooms").value;
-      const sqft = document.getElementById("sqft").value;
+    const overlay = document.getElementById('overlay');
+    const popups = ['login', 'register', 'forgot'];
 
-      fetch('/generate_house', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ floors, rooms, sqft })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.image) {
-          const resultImage = document.getElementById("resultImg");
-          resultImage.src = data.image + '?t=' + new Date().getTime();
-          resultImage.style.display = 'block';
-        } else {
-          console.error('Error generating image:', data.error);
-        }
-      });
+    function openForm(id) {
+      popups.forEach(p => document.getElementById(p).style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      overlay.style.display = 'block';
     }
+    overlay.onclick = function() {
+      popups.forEach(p => document.getElementById(p).style.display = 'none');
+      overlay.style.display = 'none';
+    };
 
-    document.addEventListener('DOMContentLoaded', generateBlueprint);
+    function generateQuestions(type) {
+      const questionBox = document.getElementById('question-box');
+      let questions = [];
+
+      if (type === 'personal') {
+        questions = [
+          "How much sqft  do you need?",
+          "How many floors do you need per floor?",
+          "How many bedrooms?",
+          "Do you require a garden or balcony?",
+          "Preferred architectural style?"
+        ];
+      } else if (type === 'professional') {
+        questions = [
+          "What is the total employee count?",
+          "Do you require separate conference rooms?",
+          "How many parking spaces?",
+          "Do you need a reception area?"
+        ];
+      } else if (type === 'organization') {
+        questions = [
+          "Total capacity required?",
+          "Do you need auditorium space?",
+          "Number of bathrooms needed?",
+          "Should it be wheelchair accessible?"
+        ];
+      }
+      questionBox.innerHTML = `
+  <form id="qaForm">
+    ${questions.map(q => `
+      <label>${q}</label>
+      <input type="text" placeholder="Your answer here..."><br><br>
+    `).join('')}
+    <button type="submit" class="btn">Submit</button>
+  </form>
+  <div id="generateBtnBox" style="display:none; margin-top:20px;">
+    <button class="btn" onclick="generateBlueprint()">Generate Blueprint</button>
+    <br><br>
+    <img id="resultImg" src="blueprint.png" alt="Generated Blueprint" style="display:none; max-width:100%;">
+  </div>
+`;
+
+document.getElementById("qaForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  document.getElementById("generateBtnBox").style.display = "block";
+});
+    }
   </script>
 </body>
 </html>
