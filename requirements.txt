@@ -1,0 +1,6 @@
+Flask
+flask-cors
+matplotlib
+numpy
+Pillow
+gunicorn
